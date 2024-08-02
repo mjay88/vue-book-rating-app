@@ -1,7 +1,6 @@
 <script setup>
 import { ref, reactive, onBeforeMount } from "vue";
 
-
 import { StarIcon, PlusIcon } from "@heroicons/vue/20/solid";
 import { TrashIcon, DocumentArrowDownIcon } from "@heroicons/vue/24/outline";
 import {
@@ -16,7 +15,7 @@ import BaseButton from "./components/BaseButton.vue";
 
 const url =
 	"https://openlibrary.org/subjects/classic_literature.json?details=false&limit=3";
-  
+
 const books = ref([]);
 
 const errors = reactive({
@@ -85,7 +84,6 @@ const clearErrors = () => {
 
 const isModalOpen = ref(false);
 
-
 const handleFormSubmission = () => {
 	// console.log(formData);
 	if (validate()) {
@@ -96,7 +94,6 @@ const handleFormSubmission = () => {
 	console.log(errors);
 };
 
-
 const closeModal = () => {
 	isModalOpen.value = false;
 	resetForm();
@@ -106,28 +103,16 @@ const openModal = () => {
 	isModalOpen.value = true;
 };
 
-
-
 const displayAuthorName = (book) => {
 	return book.authors ? book.authors[0].name : book.author;
-
+};
 const resetForm = () => {
 	formData.title = null;
 	formData.author = null;
 	formData.image = null;
 	formData.rating = null;
 	formData.id = null;
-
 };
-
-const handleFormSubmission = () => {
-	if (validate()) {
-		const newBook = { ...formData, id: Number(Date.now()) };
-		books.value.push(newBook);
-		closeModal();
-	}
-};
-
 
 const handleChangeRating = (bookIndex, newRating) => {
 	books.value[bookIndex].rating = newRating;
@@ -136,7 +121,6 @@ const handleChangeRating = (bookIndex, newRating) => {
 const removeBook = (bookIndex) => {
 	books.value = books.value.filter((book, bookIdx) => bookIndex !== bookIdx);
 };
-
 </script>
 
 <template>
