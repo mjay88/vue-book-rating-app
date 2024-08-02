@@ -5,7 +5,7 @@ export default {
 		extend: {},
 	},
 	plugins: [
-		// ...
+		"prettier-plugin-tailwindcss",
 		require("@tailwindcss/aspect-ratio"),
 		require("@tailwindcss/forms"),
 	],
