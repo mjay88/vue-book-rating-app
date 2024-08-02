@@ -3,6 +3,7 @@ import { computed } from "vue";
 const props = defineProps({
 	label: {
 		type: String,
+		default: null,
 	},
 	type: {
 		type: String,
