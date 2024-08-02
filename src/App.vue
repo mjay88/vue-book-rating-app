@@ -102,7 +102,7 @@ const removeBook = (bookIndex) => {
 <template>
 	<div class="relative bg-white h-screen">
 		<BaseButton
-			@handle-click="openModal"
+			@handleClick="openModal"
 			class="absolute left-5 top-5"
 			label="Add A Book"
 			mode="primary"
