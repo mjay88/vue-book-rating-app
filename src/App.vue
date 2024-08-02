@@ -106,6 +106,7 @@ const openModal = () => {
 const displayAuthorName = (book) => {
 	return book.authors ? book.authors[0].name : book.author;
 };
+
 const resetForm = () => {
 	formData.title = null;
 	formData.author = null;
@@ -121,6 +122,14 @@ const handleChangeRating = (bookIndex, newRating) => {
 const removeBook = (bookIndex) => {
 	books.value = books.value.filter((book, bookIdx) => bookIndex !== bookIdx);
 };
+
+
+const getImageSrc = (book) => {
+	return book.cover_id
+		? `https://covers.openlibrary.org/b/id/${book.cover_id}-L.jpg`
+		: book.image;
+};
+
 </script>
 
 <template>
@@ -333,7 +342,7 @@ const removeBook = (bookIndex) => {
 							>
 						</div>
 						<img
-							:src="book.image"
+							:src="getImageSrc(book)"
 							class="object-cover object-center md:scale-90 rounded-md"
 						/>
 					</div>
@@ -341,7 +350,7 @@ const removeBook = (bookIndex) => {
 						{{ book.title }}
 					</h1>
 					<h1 class="font-semibold text-gray-900 text-center text-xl">
-						{{ book.author }}
+						{{ displayAuthorName(book) }}
 					</h1>
 
 					<div class="flex items-center justify-center m-2">
