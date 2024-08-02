@@ -35,6 +35,23 @@ const validations = reactive({
 	image: "required",
 });
 
+const getBooks = async () => {
+	try {
+		const response = await fetch(url);
+		if (!response.ok) {
+			throw new Error(`HTTP error! Status: ${response.status}`);
+		}
+		const data = await response.json();
+		books.value = data.works;
+	} catch (error) {
+		console.error("Error fetching books:", error);
+	}
+};
+
+onBeforeMount(() => {
+	getBooks();
+});
+
 const validationRules = (rule) => {
 	if (rule === "required") return /^ *$/;
 
@@ -63,29 +80,6 @@ const clearErrors = () => {
 };
 
 const isModalOpen = ref(false);
-const getBooks = async () => {
-	try {
-		// Fetch data from the API
-		const response = await fetch(url);
-		// Check if the response is OK
-		if (!response.ok) {
-			throw new Error(`HTTP error! Status: ${response.status}`);
-		}
-		// Parse the JSON response
-		const data = await response.json();
-		console.log(data.works);
-		// Assign the data to the reactive reference
-		books.value = data.works;
-	} catch (error) {
-		// Handle any errors that occurred during the fetch
-		console.error("Error fetching books:", error);
-	}
-};
-
-// Use the onBeforeMount lifecycle hook to call the function
-onBeforeMount(() => {
-	getBooks();
-});
 
 const handleFormSubmission = () => {
 	// console.log(formData);
@@ -113,6 +107,14 @@ const openModal = () => {
 	isModalOpen.value = true;
 };
 
+const handleChangeRating = (bookIndex, newRating) => {
+	books.value[bookIndex].rating = newRating;
+};
+
+const removeBook = (bookIndex) => {
+	books.value = books.value.filter((book, bookIdx) => bookIndex !== bookIdx);
+};
+
 const displayAuthorName = (book) => {
 	return book.authors ? book.authors[0].name : book.author;
 };
@@ -121,15 +123,6 @@ const getImageSrc = (book) => {
 	return book.cover_id
 		? `https://covers.openlibrary.org/b/id/${book.cover_id}-L.jpg`
 		: book.image;
-};
-
-//create a method that will map books and create a rating property based upon the rating that we select
-const handleChangeRating = (bookIndex, newRating) => {
-	books.value[bookIndex].rating = newRating;
-};
-
-const removeBook = (bookIndex) => {
-	books.value = books.value.filter((book, bookIdx) => bookIndex !== bookIdx);
 };
 </script>
 
