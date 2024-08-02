@@ -123,13 +123,11 @@ const removeBook = (bookIndex) => {
 	books.value = books.value.filter((book, bookIdx) => bookIndex !== bookIdx);
 };
 
-
 const getImageSrc = (book) => {
 	return book.cover_id
 		? `https://covers.openlibrary.org/b/id/${book.cover_id}-L.jpg`
 		: book.image;
 };
-
 </script>
 
 <template>
