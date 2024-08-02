@@ -1,8 +1,8 @@
 <script setup>
-import { onBeforeMount, ref, reactive, computed } from "vue";
-import { StarIcon } from "@heroicons/vue/20/solid";
-import { TrashIcon } from "@heroicons/vue/24/outline";
+import { ref, reactive, onBeforeMount } from "vue";
 
+import { StarIcon, PlusIcon } from "@heroicons/vue/20/solid";
+import { TrashIcon, DocumentArrowDownIcon } from "@heroicons/vue/24/outline";
 import {
 	Dialog,
 	DialogPanel,
@@ -10,6 +10,8 @@ import {
 	TransitionChild,
 	TransitionRoot,
 } from "@headlessui/vue";
+
+import BaseButton from "./components/BaseButton.vue";
 
 const url =
 	"https://openlibrary.org/subjects/classic_literature.json?details=false&limit=3";
@@ -22,6 +24,7 @@ const errors = reactive({
 	image: null,
 	rating: null,
 });
+
 const formData = reactive({
 	id: null,
 	title: null,
@@ -29,6 +32,7 @@ const formData = reactive({
 	image: null,
 	rating: null,
 });
+
 const validations = reactive({
 	title: "required",
 	author: "required",
@@ -54,11 +58,10 @@ onBeforeMount(() => {
 
 const validationRules = (rule) => {
 	if (rule === "required") return /^ *$/;
-
 	return null;
 };
 
-function validate() {
+const validate = () => {
 	let valid = true;
 	clearErrors();
 	for (const [field, rule] of Object.entries(validations)) {
@@ -71,7 +74,7 @@ function validate() {
 		}
 	}
 	return valid;
-}
+};
 const clearErrors = () => {
 	errors.title = null;
 	errors.author = null;
@@ -91,13 +94,6 @@ const handleFormSubmission = () => {
 	console.log(errors);
 };
 
-const resetForm = () => {
-	formData.title = null;
-	formData.author = null;
-	formData.image = null;
-	formData.rating = null;
-	formData.id = null;
-};
 const closeModal = () => {
 	isModalOpen.value = false;
 	resetForm();
@@ -107,16 +103,24 @@ const openModal = () => {
 	isModalOpen.value = true;
 };
 
+const resetForm = () => {
+	formData.title = null;
+	formData.author = null;
+	formData.image = null;
+	formData.rating = null;
+	formData.id = null;
+};
+
 const handleChangeRating = (bookIndex, newRating) => {
 	books.value[bookIndex].rating = newRating;
 };
 
-const removeBook = (bookIndex) => {
-	books.value = books.value.filter((book, bookIdx) => bookIndex !== bookIdx);
-};
-
 const displayAuthorName = (book) => {
 	return book.authors ? book.authors[0].name : book.author;
+};
+
+const removeBook = (bookIndex) => {
+	books.value = books.value.filter((book, bookIdx) => bookIndex !== bookIdx);
 };
 
 const getImageSrc = (book) => {
@@ -128,12 +132,17 @@ const getImageSrc = (book) => {
 
 <template>
 	<div class="relative bg-white h-screen">
-		<button
-			class="absolute left-5 top-5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-			@click="openModal"
+		<BaseButton
+			@handleClick="openModal"
+			class="absolute left-5 top-5"
+			label="Add A Book"
+			mode="primary"
+			type="button"
 		>
-			Add A Book
-		</button>
+			<template #icon>
+				<PlusIcon class="h-4 w-4" />
+			</template>
+		</BaseButton>
 		<TransitionRoot as="template" :show="isModalOpen">
 			<Dialog class="relative z-10" @close="isModalOpen = false">
 				<TransitionChild
@@ -289,19 +298,18 @@ const getImageSrc = (book) => {
 									</div>
 
 									<div class="mt-6 flex items-center justify-end gap-x-6">
-										<button
+										<BaseButton
 											type="button"
-											class="text-sm font-semibold leading-6 text-gray-900"
-											@click="isModalOpen = false"
+											@handleClick="closeModal"
+											label="Cancel"
+											mode="secondary"
 										>
-											Cancel
-										</button>
-										<button
-											type="submit"
-											class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-										>
-											Save
-										</button>
+										</BaseButton>
+										<BaseButton type="submit" label="Submit" mode="primary">
+											<template #icon>
+												<DocumentArrowDownIcon class="w-4 h-4" />
+											</template>
+										</BaseButton>
 									</div>
 								</form>
 							</DialogPanel>
@@ -312,12 +320,12 @@ const getImageSrc = (book) => {
 		</TransitionRoot>
 		<div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-4">
 			<div
-				class="mt-12 md:mt-6 grid grid-cols-1 gap-y-10 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-0 lg:gap-x-8"
+				class="mt-12 grid grid-cols-1 gap-y-10 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-0 lg:gap-x-8"
 			>
 				<div
 					v-for="(book, bookIndex) in books"
-					:key="book.cover_id ? book.cover_id : book.id"
-					class="group relative flex flex-col justify-center items-center sm:flex-none sm:block shadow-lg shadow-gray-500/50 rounded"
+					:key="book.id"
+					class="group relative flex flex-col justify-center items-center sm:flex-none sm:block shadow-lg shadow-gray-500/50 rounded mb-4 pt-2 md:pt-0"
 				>
 					<div
 						class="relative md:h-96 md:w-full overflow-hidden rounded-lg sm:aspect-h-3 sm:aspect-w-2 group-hover:opacity-75 sm:h-auto"
@@ -332,7 +340,7 @@ const getImageSrc = (book) => {
 							>
 						</div>
 						<img
-							:src="getImageSrc(book)"
+							:src="book.image"
 							class="object-cover object-center md:scale-90 rounded-md"
 						/>
 					</div>
@@ -340,11 +348,10 @@ const getImageSrc = (book) => {
 						{{ book.title }}
 					</h1>
 					<h1 class="font-semibold text-gray-900 text-center text-xl">
-						{{ displayAuthorName(book) }}
+						{{ book.author }}
 					</h1>
 
 					<div class="flex items-center justify-center m-2">
-						<!-- Center the first button -->
 						<button class="flex items-center justify-center flex-1">
 							<StarIcon
 								v-for="rating in [1, 2, 3, 4, 5]"
@@ -359,15 +366,15 @@ const getImageSrc = (book) => {
 								aria-hidden="true"
 							/>
 						</button>
-						<!-- Move the second button to the end -->
-						<button
-							@click="removeBook(bookIndex)"
-							class="rounded-full absolute right-1"
+
+						<BaseButton
+							@handleClick="removeBook(bookIndex)"
+							class="absolute right-1"
+							type="button"
+							mode="auxillary"
 						>
-							<TrashIcon
-								class="h-8 w-8 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 hover:text-slate-600"
-							/>
-						</button>
+							<TrashIcon class="hover:text-slate-600" />
+						</BaseButton>
 					</div>
 				</div>
 			</div>
