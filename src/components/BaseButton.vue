@@ -1,6 +1,18 @@
 <script setup>
 import { computed } from "vue";
-const props = defineProps(["label", "mode", "type"]);
+const props = defineProps({
+	label: {
+		type: String,
+	},
+	type: {
+		type: String,
+		required: true,
+	},
+	mode: {
+		type: String,
+		required: true,
+	},
+});
 defineEmits(["handleClick"]);
 
 const styles = computed(() => {
