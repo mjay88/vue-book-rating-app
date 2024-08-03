@@ -1,8 +1,6 @@
 <script setup>
 import { ref, onBeforeMount, defineAsyncComponent } from "vue";
-
 import { PlusIcon } from "@heroicons/vue/20/solid";
-
 import BookCard from "./components/BookCard.vue";
 
 const AsyncFormComponent = defineAsyncComponent(
@@ -16,6 +14,7 @@ const url =
 	"https://openlibrary.org/subjects/classic_literature.json?details=false&limit=3";
 
 const books = ref([]);
+const isModalOpen = ref(false);
 
 const getBooks = async () => {
 	try {
@@ -46,7 +45,6 @@ const handleFormSubmission = (formData) => {
 	books.value.push(newBook);
 	closeModal();
 };
-const isModalOpen = ref(false);
 
 const closeModal = () => {
 	isModalOpen.value = false;
@@ -86,7 +84,7 @@ const removeBook = (bookId) => {
 		>
 			<AsyncFormComponent
 				@add:book="handleFormSubmission"
-				@close="closeModal"
+				@close:modal="closeModal"
 			/>
 		</AsyncModalComponent>
 
