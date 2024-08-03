@@ -1,11 +1,15 @@
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, defineAsyncComponent } from "vue";
 
 import { PlusIcon } from "@heroicons/vue/20/solid";
 
 import BookCard from "./components/BookCard.vue";
-import FormComponent from "./components/FormComponent.vue";
-import ModalComponent from "./components/ModalComponent.vue";
+const AsyncModalComponent = defineAsyncComponent(
+	() => import("./components/ModalComponent.vue")
+);
+const AsyncFormComponent = defineAsyncComponent(
+	() => import("./components/FormComponent.vue")
+);
 
 const url =
 	"https://openlibrary.org/subjects/classic_literature.json?details=false&limit=3";
@@ -74,13 +78,16 @@ const removeBook = (bookId) => {
 				<PlusIcon class="h-4 w-4" />
 			</template>
 		</BaseButton>
-		<ModalComponent
+		<AsyncModalComponent
 			:isModalOpen="isModalOpen"
 			title="Add A New Book"
 			@close:modal="closeModal"
 		>
-			<FormComponent @add:book="handleFormSubmission" @close="closeModal" />
-		</ModalComponent>
+			<AsyncFormComponent
+				@add:book="handleFormSubmission"
+				@close="closeModal"
+			/>
+		</AsyncModalComponent>
 
 		<div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-4">
 			<div
