@@ -1,8 +1,6 @@
 <script setup>
 import { DocumentArrowDownIcon } from "@heroicons/vue/24/outline";
-
 import { reactive } from "vue";
-
 const emit = defineEmits(["add:book", "close"]);
 
 const formData = reactive({
@@ -42,6 +40,7 @@ const addBook = () => {
 
 const closeModal = () => {
 	emit("close");
+	resetForm();
 };
 
 const validationRules = (rule) => {
