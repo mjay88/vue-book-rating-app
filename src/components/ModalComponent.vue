@@ -18,7 +18,7 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits("close:modal");
+const emit = defineEmits(["close:modal"]);
 
 const closeModal = () => {
 	emit("close:modal");

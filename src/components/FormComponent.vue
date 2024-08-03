@@ -1,7 +1,7 @@
 <script setup>
 import { DocumentArrowDownIcon } from "@heroicons/vue/24/outline";
 import { reactive } from "vue";
-const emit = defineEmits(["add:book", "close"]);
+const emit = defineEmits(["add:book", "close:modal"]);
 
 const formData = reactive({
 	id: null,
@@ -39,7 +39,7 @@ const addBook = () => {
 };
 
 const closeModal = () => {
-	emit("close");
+	emit("close:modal");
 	resetForm();
 };
 
@@ -100,6 +100,7 @@ const clearErrors = () => {
 									autocomplete="title"
 									class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
 									placeholder="A Tale of Two Cities"
+									autofocus
 								/>
 							</div>
 							<p v-if="errors.title != null" class="text-red-500 text-sm">
