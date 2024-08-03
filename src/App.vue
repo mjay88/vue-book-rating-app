@@ -4,11 +4,12 @@ import { ref, onBeforeMount, defineAsyncComponent } from "vue";
 import { PlusIcon } from "@heroicons/vue/20/solid";
 
 import BookCard from "./components/BookCard.vue";
-const AsyncModalComponent = defineAsyncComponent(
-	() => import("./components/ModalComponent.vue")
-);
+
 const AsyncFormComponent = defineAsyncComponent(
 	() => import("./components/FormComponent.vue")
+);
+const AsyncModalComponent = defineAsyncComponent(
+	() => import("./components/ModalComponent.vue")
 );
 
 const url =
