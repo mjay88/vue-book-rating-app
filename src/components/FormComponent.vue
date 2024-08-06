@@ -1,7 +1,13 @@
 <script setup>
 import { DocumentArrowDownIcon } from "@heroicons/vue/24/outline";
-import { reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 const emit = defineEmits(["add:book", "close:modal"]);
+
+const input = ref(null);
+
+onMounted(() => {
+	input.value.focus();
+});
 
 const formData = reactive({
 	id: null,
@@ -100,6 +106,7 @@ const clearErrors = () => {
 									autocomplete="title"
 									class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
 									placeholder="A Tale of Two Cities"
+									ref="input"
 								/>
 							</div>
 							<p v-if="errors.title != null" class="text-red-500 text-sm">
