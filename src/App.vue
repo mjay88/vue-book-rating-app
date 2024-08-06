@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount, defineAsyncComponent } from "vue";
+import { ref, onBeforeMount, defineAsyncComponent, watch } from "vue";
 import { PlusIcon } from "@heroicons/vue/20/solid";
 import BookCard from "./components/BookCard.vue";
 
@@ -15,6 +15,7 @@ const url =
 
 const books = ref([]);
 const isModalOpen = ref(false);
+const offset = ref(0);
 
 const getBooks = async () => {
 	try {
@@ -29,6 +30,24 @@ const getBooks = async () => {
 		console.error("Error fetching books:", error);
 	}
 };
+
+//watcher for retieving the next page of books (limited to the first three books)
+watch(offset, async (newOffset, oldOffset) => {
+	try {
+		const response = await fetch(
+			`https://openlibrary.org/subjects/classic_literature.json?details=false&limit=3&offset=${newOffset}`
+		);
+		if (!response.ok) {
+			throw new Error(`HTTP error! Status: ${response.status}`);
+		}
+		const data = await response.json();
+		books.value = mapBookKeys(data.works);
+		console.log(books.value);
+	} catch (error) {
+		console.error("Error fetching books:", error);
+	}
+});
+
 //create a id field to sync incoming form data an API data, leave cover_id field because thats our we retrieve the cover images from api
 const mapBookKeys = (books) => {
 	return books.map((book) => {
@@ -77,6 +96,16 @@ const removeBook = (bookId) => {
 				<PlusIcon class="h-4 w-4" />
 			</template>
 		</BaseButton>
+		<div class="absolute right-5 top-5">
+			<BaseButton
+				@handleClick="offset += 3"
+				class=""
+				label="Next Page"
+				mode="primary"
+				type="button"
+			>
+			</BaseButton>
+		</div>
 		<AsyncModalComponent
 			:isModalOpen="isModalOpen"
 			title="Add A New Book"
