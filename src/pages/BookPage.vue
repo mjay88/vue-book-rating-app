@@ -1,13 +1,16 @@
 <script setup>
-import { onBeforeMount, ref, watch } from "vue";
+import { onBeforeMount, onMounted, ref, watch } from "vue";
 import { TabGroup, TabPanel, TabPanels } from "@headlessui/vue";
 import { StarIcon, ArrowLeftIcon } from "@heroicons/vue/20/solid";
 import { RouterLink } from "vue-router";
 import { useRoute } from "vue-router";
 
+const props = defineProps(["bookId"]);
+
 const route = useRoute();
 console.log(route.params, "route.params");
 const bookId = route.params.bookId;
+// const book = ref(null);
 const book = ref(null);
 const author = ref("");
 

@@ -87,7 +87,6 @@ const removeBook = (bookId) => {
 </script>
 
 <template>
-	<RouterView />
 	<div class="relative bg-white h-screen">
 		<BaseButton
 			@handleClick="openModal"

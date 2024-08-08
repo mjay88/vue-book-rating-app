@@ -1,6 +1,7 @@
 <script setup>
 import { StarIcon } from "@heroicons/vue/20/solid";
 import { TrashIcon } from "@heroicons/vue/24/outline";
+
 const props = defineProps({
 	book: { Object, required: true },
 });
