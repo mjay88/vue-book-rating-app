@@ -5,12 +5,8 @@ import { StarIcon, ArrowLeftIcon } from "@heroicons/vue/20/solid";
 import { RouterLink } from "vue-router";
 import { useRoute } from "vue-router";
 
-const props = defineProps(["bookId"]);
-
 const route = useRoute();
-console.log(route.params, "route.params");
 const bookId = route.params.bookId;
-// const book = ref(null);
 const book = ref(null);
 const author = ref("");
 
@@ -23,7 +19,6 @@ const getBook = async (bookId) => {
 			throw new Error(`HTTP error! Status: ${response.status}`);
 		}
 		const data = await response.json();
-		console.log(data, "data");
 		book.value = data;
 	} catch (error) {
 		console.error("Error fetching books:", error);
@@ -39,7 +34,6 @@ const getImageSrc = (book) => {
 };
 
 watch(book, async (newBook, oldBook) => {
-	console.log(newBook.authors[0].author.key, "inside Watch");
 	try {
 		const response = await fetch(
 			`https://openlibrary.org${newBook.authors[0].author.key}.json`
@@ -60,20 +54,8 @@ watch(book, async (newBook, oldBook) => {
 		<div
 			class="relative mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8"
 		>
-			<BaseButton
-				@handleClick=""
-				class="absolute left-5 top-5"
-				label="Go Back"
-				mode="primary"
-				type="button"
-			>
-				<template #icon>
-					<ArrowLeftIcon class="h-4 w-4" />
-				</template>
-			</BaseButton>
 			<RouterLink to="/">
 				<BaseButton
-					@handleClick="offset += 3"
 					class="absolute right-5 top-5"
 					label="Go Home"
 					mode="primary"

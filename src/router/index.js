@@ -8,7 +8,13 @@ import NotFound from "../components/404.vue";
 const router = createRouter({
 	history: createWebHistory(),
 	routes: [
-		{ path: "/", component: HomePage },
+		{
+			path: "/",
+			component: HomePage,
+			beforeEnter(to, from) {
+				console.log(from.params, "to.params.offset");
+			},
+		},
 		{ path: "/books/:bookId", name: "books", component: BookPage, props: true },
 		{ path: "/:notFound(.*)", component: NotFound },
 	],
