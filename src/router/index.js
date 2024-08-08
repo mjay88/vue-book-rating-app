@@ -6,7 +6,7 @@ const router = createRouter({
 	history: createWebHistory(),
 	routes: [
 		{ path: "/", component: HomePage },
-		{ path: "/books/:bookId", component: BookPage },
+		{ path: "/books/:bookId", name: "books", component: BookPage, props: true },
 	],
 });
 
