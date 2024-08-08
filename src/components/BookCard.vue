@@ -1,9 +1,11 @@
 <script setup>
 import { StarIcon } from "@heroicons/vue/20/solid";
 import { TrashIcon } from "@heroicons/vue/24/outline";
-defineProps({
+
+const props = defineProps({
 	book: { Object, required: true },
 });
+const book = props.book;
 const emit = defineEmits(["change:rating", "remove:book"]);
 
 const changeRating = (bookId, rating) => {
@@ -59,8 +61,12 @@ const getImageSrc = (book) => {
 				{{ displayAuthorName(book) }}
 			</h1>
 
-			<div class="relative flex justify-center items-center m-2">
-				<div class="flex justify-center items-center mx-auto pl-12">
+			<div class="relative flex justify-between items-center m-2">
+				<RouterLink :to="'/books/' + book.key.split('/')[2]">
+					<BaseButton label="Details" type="button" mode="primary" class="px-1">
+					</BaseButton>
+				</RouterLink>
+				<div class="flex justify-center items-center mx-auto">
 					<button
 						v-for="rating in [1, 2, 3, 4, 5]"
 						:key="rating"

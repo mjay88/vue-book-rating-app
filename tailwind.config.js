@@ -7,6 +7,7 @@ export default {
 
 	plugins: [
 		"prettier-plugin-tailwindcss",
+		require("@tailwindcss/typography"),
 		require("@tailwindcss/aspect-ratio"),
 		require("@tailwindcss/forms"),
 	],
