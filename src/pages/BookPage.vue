@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, onMounted, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { TabGroup, TabPanel, TabPanels } from "@headlessui/vue";
 import { StarIcon, ArrowLeftIcon } from "@heroicons/vue/20/solid";
 import { RouterLink } from "vue-router";
@@ -10,16 +10,14 @@ const bookId = route.params.bookId;
 const book = ref(null);
 
 const getBook = async (bookId) => {
-	console.log(bookId);
 	try {
 		const response = await fetch(
-			`https://openlibrary.org/books/${bookId}.json`
+			`https://openlibrary.org/works/${bookId}.json`
 		);
 		if (!response.ok) {
 			throw new Error(`HTTP error! Status: ${response.status}`);
 		}
 		const data = await response.json();
-		console.log(data, "data");
 		book.value = data;
 	} catch (error) {
 		console.error("Error fetching books:", error);
@@ -108,13 +106,17 @@ const product = {
 			</RouterLink>
 			<div v-if="book" class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
 				<!-- Image gallery -->
-				<TabGroup as="div" class="flex flex-col-reverse">
+				<TabGroup as="div" class="flex">
 					<TabPanels class="aspect-h-1 aspect-w-1 w-full">
-						<TabPanel v-for="image in product.images" :key="image.id">
+						<TabPanel
+							v-for="image in product.images"
+							:key="image.id"
+							class="flex justify-center items-center"
+						>
 							<img
-								:src="getImageSrc()"
+								:src="getImageSrc(book)"
 								:alt="image.alt"
-								class="h-full w-full object-cover object-center sm:rounded-lg"
+								class="h-full w-8/12 object-cover object-center sm:rounded-lg"
 							/>
 						</TabPanel>
 					</TabPanels>
@@ -122,7 +124,9 @@ const product = {
 
 				<!-- Product info -->
 				<div class="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-					<h1 class="text-3xl font-bold tracking-tight text-gray-900">
+					<h1
+						class="text-center text-3xl font-bold tracking-tight text-gray-900"
+					>
 						{{ book.title }}
 					</h1>
 

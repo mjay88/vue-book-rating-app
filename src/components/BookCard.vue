@@ -5,7 +5,6 @@ const props = defineProps({
 	book: { Object, required: true },
 });
 const book = props.book;
-console.log(book, "book");
 const emit = defineEmits(["change:rating", "remove:book"]);
 
 const changeRating = (bookId, rating) => {
@@ -62,7 +61,7 @@ const getImageSrc = (book) => {
 			</h1>
 
 			<div class="relative flex justify-between items-center m-2">
-				<RouterLink :to="'/books/' + book.cover_edition_key">
+				<RouterLink :to="'/books/' + book.key.split('/')[2]">
 					<BaseButton label="Details" type="button" mode="primary" class="px-1">
 					</BaseButton>
 				</RouterLink>
