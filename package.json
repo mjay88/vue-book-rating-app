@@ -12,7 +12,9 @@
     "@headlessui/vue": "^1.7.22",
     "@heroicons/vue": "^2.1.5",
     "@tailwindcss/forms": "^0.5.7",
-    "vue": "^3.4.31"
+    "@tailwindcss/typography": "github:tailwindcss/typography",
+    "vue": "^3.4.31",
+    "vue-router": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
