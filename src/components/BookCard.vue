@@ -2,10 +2,10 @@
 import { StarIcon } from "@heroicons/vue/20/solid";
 import { TrashIcon } from "@heroicons/vue/24/outline";
 
-const props = defineProps({
+defineProps({
 	book: { Object, required: true },
 });
-const book = props.book;
+
 const emit = defineEmits(["change:rating", "remove:book"]);
 
 const changeRating = (bookId, rating) => {
@@ -62,7 +62,9 @@ const getImageSrc = (book) => {
 			</h1>
 
 			<div class="relative flex justify-between items-center m-2">
-				<RouterLink :to="'/books/' + book.key.split('/')[2]">
+				<RouterLink
+					:to="{ name: 'books', params: { bookId: book.key.split('/')[2] } }"
+				>
 					<BaseButton label="Details" type="button" mode="primary" class="px-1">
 					</BaseButton>
 				</RouterLink>

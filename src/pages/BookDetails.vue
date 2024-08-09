@@ -1,7 +1,6 @@
 <script setup>
 import { onBeforeMount, onMounted, ref, watch } from "vue";
 import { TabGroup, TabPanel, TabPanels } from "@headlessui/vue";
-import { StarIcon, ArrowLeftIcon } from "@heroicons/vue/20/solid";
 import { RouterLink } from "vue-router";
 import { useRoute } from "vue-router";
 

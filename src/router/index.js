@@ -16,7 +16,6 @@ const router = createRouter({
 			path: "/books/:bookId",
 			name: "books",
 			component: BookDetails,
-			props: true,
 		},
 		{ path: "/:notFound(.*)", component: NotFound },
 	],

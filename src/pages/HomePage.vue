@@ -2,7 +2,6 @@
 import { ref, onBeforeMount, defineAsyncComponent, watch } from "vue";
 import { PlusIcon } from "@heroicons/vue/20/solid";
 import BookCard from "../components/BookCard.vue";
-import { useRoute, useRouter } from "vue-router";
 
 const AsyncFormComponent = defineAsyncComponent(
 	() => import("../components/FormComponent.vue")
@@ -11,8 +10,6 @@ const AsyncModalComponent = defineAsyncComponent(
 	() => import("../components/ModalComponent.vue")
 );
 
-const router = useRouter();
-const route = useRoute();
 const url =
 	"https://openlibrary.org/subjects/classic_literature.json?details=false&limit=3";
 
