@@ -28,7 +28,6 @@ const getBooks = async () => {
 		}
 		const data = await response.json();
 		books.value = mapBookKeys(data.works);
-		console.log(books.value);
 	} catch (error) {
 		console.error("Error fetching books:", error);
 	}
@@ -45,7 +44,6 @@ watch(offset, async (newOffset, oldOffset) => {
 		}
 		const data = await response.json();
 		books.value = mapBookKeys(data.works);
-		console.log(books.value);
 	} catch (error) {
 		console.error("Error fetching books:", error);
 	}

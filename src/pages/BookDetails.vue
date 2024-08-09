@@ -42,7 +42,6 @@ watch(book, async (newBook, oldBook) => {
 			throw new Error(`HTTP error! Status: ${response.status}`);
 		}
 		const data = await response.json();
-		console.log(data, "data inside watch");
 		author.value = data.name;
 	} catch (error) {
 		console.error("Error fetching books:", error);
