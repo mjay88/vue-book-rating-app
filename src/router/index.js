@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import BookPage from "../pages/BookPage.vue";
+import BookDetails from "../pages/BookDetails.vue";
 import HomePage from "../pages/HomePage.vue";
 import NotFound from "../components/404.vue";
 
@@ -12,7 +12,12 @@ const router = createRouter({
 			path: "/",
 			component: HomePage,
 		},
-		{ path: "/books/:bookId", name: "books", component: BookPage, props: true },
+		{
+			path: "/books/:bookId",
+			name: "books",
+			component: BookDetails,
+			props: true,
+		},
 		{ path: "/:notFound(.*)", component: NotFound },
 	],
 });
