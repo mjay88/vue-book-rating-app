@@ -2,8 +2,8 @@
 import { ref, reactive } from "vue";
 import { items } from "./books.json";
 
-import { StarIcon, PlusIcon } from "@heroicons/vue/20/solid";
-import { TrashIcon, DocumentArrowDownIcon } from "@heroicons/vue/24/outline";
+import { StarIcon } from "@heroicons/vue/20/solid";
+import { TrashIcon } from "@heroicons/vue/24/outline";
 import {
 	Dialog,
 	DialogPanel,
@@ -11,8 +11,6 @@ import {
 	TransitionChild,
 	TransitionRoot,
 } from "@headlessui/vue";
-
-import BaseButton from "./components/BaseButton.vue";
 
 const books = ref(items);
 
@@ -101,17 +99,12 @@ const removeBook = (bookIndex) => {
 
 <template>
 	<div class="relative bg-white h-screen">
-		<BaseButton
-			@handleClick="openModal"
-			class="absolute left-5 top-5"
-			label="Add A Book"
-			mode="primary"
-			type="button"
+		<button
+			class="absolute left-5 top-5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+			@click="openModal"
 		>
-			<template #icon>
-				<PlusIcon class="h-4 w-4" />
-			</template>
-		</BaseButton>
+			Add A Book
+		</button>
 		<TransitionRoot as="template" :show="isModalOpen">
 			<Dialog class="relative z-10" @close="isModalOpen = false">
 				<TransitionChild
@@ -267,18 +260,19 @@ const removeBook = (bookIndex) => {
 									</div>
 
 									<div class="mt-6 flex items-center justify-end gap-x-6">
-										<BaseButton
+										<button
 											type="button"
-											@handleClick="closeModal"
-											label="Cancel"
-											mode="secondary"
+											class="text-sm font-semibold leading-6 text-gray-900"
+											@click="closeModal"
 										>
-										</BaseButton>
-										<BaseButton type="submit" label="Submit" mode="primary">
-											<template #icon>
-												<DocumentArrowDownIcon class="w-4 h-4" />
-											</template>
-										</BaseButton>
+											Cancel
+										</button>
+										<button
+											type="submit"
+											class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+										>
+											Save
+										</button>
 									</div>
 								</form>
 							</DialogPanel>
@@ -336,14 +330,14 @@ const removeBook = (bookIndex) => {
 							/>
 						</button>
 
-						<BaseButton
-							@handleClick="removeBook(bookIndex)"
-							class="absolute right-1"
-							type="button"
-							mode="auxillary"
+						<button
+							@click="removeBook(bookIndex)"
+							class="rounded-full absolute right-1"
 						>
-							<TrashIcon class="hover:text-slate-600" />
-						</BaseButton>
+							<TrashIcon
+								class="h-8 w-8 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 hover:text-slate-600"
+							/>
+						</button>
 					</div>
 				</div>
 			</div>
