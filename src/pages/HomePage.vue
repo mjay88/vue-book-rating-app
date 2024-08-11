@@ -1,8 +1,10 @@
 <script setup>
-import { ref, onBeforeMount, defineAsyncComponent, watch } from "vue";
+import { ref, defineAsyncComponent } from "vue";
 import { PlusIcon } from "@heroicons/vue/20/solid";
 import BookCard from "../components/BookCard.vue";
-import { useRoute, useRouter } from "vue-router";
+import BookLoadingSkeleton from "../components/BookLoadingSkeleton.vue";
+import { url } from "../constants";
+import { useBooks } from "../composables/books";
 
 const AsyncFormComponent = defineAsyncComponent(
 	() => import("../components/FormComponent.vue")
@@ -11,54 +13,10 @@ const AsyncModalComponent = defineAsyncComponent(
 	() => import("../components/ModalComponent.vue")
 );
 
-const router = useRouter();
-const route = useRoute();
-const url =
-	"https://openlibrary.org/subjects/classic_literature.json?details=false&limit=3";
-
-const books = ref([]);
-const isModalOpen = ref(false);
 const offset = ref(0);
+const { data: books, isLoading, error } = useBooks(url, offset);
 
-const getBooks = async () => {
-	try {
-		const response = await fetch(url);
-		if (!response.ok) {
-			throw new Error(`HTTP error! Status: ${response.status}`);
-		}
-		const data = await response.json();
-		books.value = mapBookKeys(data.works);
-	} catch (error) {
-		console.error("Error fetching books:", error);
-	}
-};
-
-//watcher for retieving the next page of books (limited to the first three books)
-watch(offset, async (newOffset, oldOffset) => {
-	try {
-		const response = await fetch(
-			`https://openlibrary.org/subjects/classic_literature.json?details=false&limit=3&offset=${newOffset}`
-		);
-		if (!response.ok) {
-			throw new Error(`HTTP error! Status: ${response.status}`);
-		}
-		const data = await response.json();
-		books.value = mapBookKeys(data.works);
-	} catch (error) {
-		console.error("Error fetching books:", error);
-	}
-});
-
-//create a id field to sync incoming form data an API data, leave cover_id field because thats our we retrieve the cover images from api
-const mapBookKeys = (books) => {
-	return books.map((book) => {
-		return { ...book, id: book["cover_id"] };
-	});
-};
-
-onBeforeMount(() => {
-	getBooks();
-});
+const isModalOpen = ref(false);
 
 const handleFormSubmission = (formData) => {
 	const newBook = { ...formData, id: Number(Date.now()) };
@@ -122,7 +80,9 @@ const removeBook = (bookId) => {
 			<div
 				class="mt-12 grid grid-cols-1 gap-y-10 sm:grid-cols-1 sm:gap-x-6 sm:gap-y-0 md:grid-cols-2 lg:grid-cols-3 lg:gap-x-8"
 			>
+				<BookLoadingSkeleton v-if="isLoading" v-for="i in 3" />
 				<BookCard
+					v-else
 					v-for="book in books"
 					:key="book.id"
 					:book="book"
