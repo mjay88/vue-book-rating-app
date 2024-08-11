@@ -1,6 +1,7 @@
 <script setup>
 import { StarIcon } from "@heroicons/vue/20/solid";
 import { TrashIcon } from "@heroicons/vue/24/outline";
+import CustomTransition from "./CustomTransition.vue";
 
 const props = defineProps({
 	book: { Object, required: true },
@@ -27,13 +28,7 @@ const getImageSrc = (book) => {
 </script>
 
 <template>
-	<Transition
-		appear
-		enter-active-class="transition-opacity duration-1000 transition-transform duration-1000"
-		leave-active-class="transition-opacity duration-1000 transition-transform duration-1000"
-		enter-from-class="opacity-0 -translate-x-3"
-		leave-to-class="opacity-0 -translate-x-3"
-	>
+	<CustomTransition>
 		<div
 			class="group relative flex flex-col justify-center items-center sm:flex-none sm:block shadow-lg shadow-gray-500/50 rounded mb-4 pt-2 md:pt-0"
 		>
@@ -95,7 +90,7 @@ const getImageSrc = (book) => {
 				</BaseButton>
 			</div>
 		</div>
-	</Transition>
+	</CustomTransition>
 </template>
 
 <style scoped>
